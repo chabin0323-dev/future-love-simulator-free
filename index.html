@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>未来予想図（無料版） - 恋愛未来シミュレーター</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+<style>
+  :root{
+    --bg:#120e28;
+    --bg-panel:#1d1740;
+    --bg-panel-2:#241c4d;
+    --line:rgba(255,255,255,0.09);
+    --accent-pink:#ff8fa8;
+    --accent-pink-dim:#a8607a;
+    --accent-gold:#f0c674;
+    --text:#f3eef9;
+    --text-muted:#a89bc9;
+    --text-faint:#6f639a;
+    --danger:#e88686;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 12% 18%, rgba(255,111,165,0.32) 0%, transparent 38%),
+      radial-gradient(circle at 88% 12%, rgba(240,198,116,0.26) 0%, transparent 40%),
+      radial-gradient(circle at 22% 88%, rgba(157,78,221,0.30) 0%, transparent 42%),
+      radial-gradient(circle at 90% 82%, rgba(255,143,168,0.22) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 50%, #2a1f5e 0%, transparent 60%),
+      linear-gradient(160deg, #0c0a1f 0%, #160f38 45%, #1c1044 100%);
+    background-size: 140% 140%, 140% 140%, 140% 140%, 140% 140%, 100% 100%, 100% 100%;
+    animation: bgdrift 22s ease-in-out infinite alternate;
+    color:var(--text);
+    font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px 14px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  @keyframes bgdrift{
+    0%{ background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, 50% 50%, 0% 0%; }
+    100%{ background-position: 15% 10%, 85% 15%, 10% 85%, 90% 90%, 50% 50%, 0% 0%; }
+  }
+  #nebula{
+    position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+  }
+  .nebula-blob{
+    position:absolute; border-radius:50%; filter:blur(50px); opacity:0.55;
+    animation: float 14s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(14px,-18px) scale(1.08); }
+  }
+  #mystic-circle{
+    position:fixed; top:50%; left:50%; width:640px; height:640px;
+    margin:-320px 0 0 -320px;
+    pointer-events:none; z-index:0; opacity:0.10;
+    animation: spin 90s linear infinite;
+  }
+  @keyframes spin{ from{ transform:rotate(0deg); } to{ transform:rotate(360deg); } }
+  .shooting-star{
+    position:fixed; width:100px; height:2px; z-index:0; pointer-events:none;
+    background:linear-gradient(90deg, rgba(255,255,255,0.95), transparent);
+    border-radius:2px;
+    opacity:0;
+    animation: shoot 9s linear infinite;
+  }
+  @keyframes shoot{
+    0%{ transform: translate(0,0) rotate(35deg); opacity:0; }
+    2%{ opacity:0.9; }
+    9%{ transform: translate(280px,200px) rotate(35deg); opacity:0; }
+    100%{ transform: translate(280px,200px) rotate(35deg); opacity:0; }
+  }
+  .headline, .serif{
+    font-family:"Hiragino Mincho ProN","Noto Serif JP","Yu Mincho",serif;
+  }
+  #stars{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+  }
+  .star{
+    position:absolute; width:2px; height:2px; border-radius:50%;
+    background:#fff; opacity:0.5;
+    animation: twinkle 4.5s ease-in-out infinite;
+  }
+  .star.bright{
+    box-shadow:0 0 6px 1.5px rgba(255,255,255,0.9), 0 0 14px 4px rgba(255,143,168,0.5);
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0.15;}
+    50%{opacity:0.9;}
+  }
+  .shell{
+    position:relative; z-index:1;
+    width:100%; max-width:420px;
+  }
+  .card{
+    background:linear-gradient(165deg, var(--bg-panel) 0%, var(--bg-panel-2) 100%);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:30px 26px 26px;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);
+    animation: rise 0.5s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes rise{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .kicker{
+    font-size:13px; color:var(--text-faint); letter-spacing:0.02em; margin:0 0 6px;
+  }
+  h1.title{
+    font-size:26px; margin:0 0 8px; line-height:1.4; font-weight:600;
+  }
+  p.lead{
+    color:var(--text-muted); font-size:14.5px; line-height:1.8; margin:0 0 22px;
+  }
+  .moonmark{
+    width:54px; height:54px; border-radius:50%;
+    background:var(--accent-gold);
+    box-shadow:inset 14px -8px 0 0 var(--bg-panel), 0 0 30px -4px rgba(240,198,116,0.5);
+    margin-bottom:18px;
+  }
+  .btn{
+    display:block; width:100%; text-align:center;
+    padding:14px 18px; border-radius:14px; border:none;
+    font-size:15px; font-weight:600; cursor:pointer;
+    font-family:inherit;
+    transition:transform 0.15s ease, opacity 0.15s ease;
+  }
+  .btn:active{ transform:scale(0.98); }
+  .btn-primary{
+    background:linear-gradient(120deg, var(--accent-pink) 0%, #ff7397 100%);
+    color:#1a0f1c;
+  }
+  .btn-ghost{
+    background:transparent; color:var(--text-muted);
+    border:1px solid var(--line);
+  }
+  .btn-gold{
+    background:linear-gradient(120deg, var(--accent-gold) 0%, #e0ab4c 100%);
+    color:#241705;
+  }
+  .btn[disabled]{ opacity:0.35; cursor:not-allowed; }
+  .stack > * + *{ margin-top:12px; }
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block; font-size:12.5px; color:var(--text-faint); margin-bottom:7px;
+  }
+  .field input[type=text], .field select{
+    width:100%; padding:12px 13px; border-radius:11px;
+    background:var(--bg); border:1px solid var(--line);
+    color:var(--text); font-size:15px; font-family:inherit;
+    appearance:none;
+  }
+  .field select{
+    background-image:linear-gradient(45deg, transparent 50%, var(--text-faint) 50%), linear-gradient(135deg, var(--text-faint) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 52%, calc(100% - 13px) 52%;
+    background-size:5px 5px, 5px 5px;
+    background-repeat:no-repeat;
+  }
+  .option{
+    display:block; width:100%; text-align:left;
+    padding:13px 15px; margin-bottom:9px; border-radius:13px;
+    background:var(--bg); border:1px solid var(--line);
+    color:var(--text); font-size:14.5px; font-family:inherit;
+    cursor:pointer; transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover{ border-color:var(--accent-pink-dim); }
+  .hl{ color:var(--accent-pink); font-weight:700; }
+  .nickname-chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 6px 6px 12px; border-radius:999px;
+    background:var(--bg); border:1px solid var(--line);
+    font-size:13px; color:var(--text);
+  }
+  .nickname-chip > span:first-child{ cursor:pointer; }
+  .nickname-chip button{
+    width:18px; height:18px; border-radius:50%; border:none;
+    background:rgba(255,255,255,0.08); color:var(--text-faint);
+    font-size:12px; line-height:1; cursor:pointer; font-family:inherit;
+  }
+  .nickname-chip button:hover{ background:rgba(255,143,168,0.25); color:var(--accent-pink); }
+  .story-card{
+    border-radius:13px; padding:14px 15px; margin-bottom:12px;
+    background:rgba(255,255,255,0.03);
+    border-left:3px solid var(--line);
+  }
+  .story-card.type-overview{ border-left-color:var(--accent-gold); }
+  .story-card.type-event{ border-left-color:var(--accent-pink); }
+  .story-card.type-caution{ border-left-color:#e88686; }
+  .story-card-head{ display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+  .story-card-icon{
+    width:24px; height:24px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:13px;
+  }
+  .story-card.type-overview .story-card-icon{ background:rgba(240,198,116,0.16); color:var(--accent-gold); }
+  .story-card.type-event .story-card-icon{ background:rgba(255,143,168,0.16); color:var(--accent-pink); }
+  .story-card.type-caution .story-card-icon{ background:rgba(232,134,134,0.16); color:#e88686; }
+  .option.selected{
+    border-color:var(--accent-pink);
+    background:linear-gradient(120deg, rgba(255,143,168,0.14), rgba(255,143,168,0.04));
+  }
+  .progress-row{
+    display:flex; align-items:center; gap:10px; margin-bottom:20px;
+  }
+  .progress-track{
+    flex:1; height:4px; border-radius:4px; background:var(--line); overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:var(--accent-pink); border-radius:4px;
+    transition:width 0.3s ease;
+  }
+  .progress-label{
+    font-size:12px; color:var(--text-faint); white-space:nowrap;
+  }
+  .q-text{
+    font-size:18px; line-height:1.6; margin:0 0 18px; font-weight:600;
+  }
+  .nav-row{ display:flex; gap:10px; margin-top:18px; }
+  .nav-row .btn{ flex:1; }
+  .score-big{
+    font-family:"Hiragino Mincho ProN","Noto Serif JP",serif;
+    font-size:64px; line-height:1; color:var(--accent-gold);
+    margin:6px 0 2px;
+  }
+  .score-cap{ font-size:13px; color:var(--text-faint); }
+  .tag{
+    display:inline-block; padding:5px 12px; border-radius:999px;
+    font-size:12.5px; margin-top:10px;
+    border:1px solid var(--accent-pink-dim); color:var(--accent-pink);
+  }
+  .divider{ height:1px; background:var(--line); margin:22px 0; }
+  .tabs{ display:flex; gap:8px; margin-bottom:18px; }
+  .tab{
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:6px;
+    padding:10px 4px; border-radius:13px; border:1px solid var(--line);
+    background:var(--bg); cursor:pointer; color:var(--text-muted); font-size:12px;
+  }
+  .tab.active{ border-color:var(--accent-gold); color:var(--text); background:var(--bg-panel-2); }
+  .moon{ width:22px; height:22px; border-radius:50%; }
+  .moon-crescent{ background:var(--accent-gold); box-shadow:inset 6px -3px 0 0 var(--bg); }
+  .moon-half{ background:linear-gradient(90deg, var(--accent-gold) 50%, var(--bg) 50%); }
+  .moon-full{ background:var(--accent-gold); }
+  .story-text{
+    font-size:15px; line-height:2; color:var(--text); margin:0;
+  }
+  .locked{
+    position:relative; padding:26px 20px; text-align:center;
+    border-radius:14px; border:1px dashed var(--line); color:var(--text-faint);
+  }
+  .locked p{ margin:0 0 14px; font-size:13.5px; line-height:1.8; }
+  .cta-note{
+    display:block; width:100%; text-align:center; text-decoration:none;
+    padding:14px 18px; border-radius:14px;
+    background:linear-gradient(120deg, var(--accent-gold) 0%, #e0ab4c 100%);
+    color:#241705; font-weight:700; font-size:15px;
+  }
+  .advice-item{
+    display:flex; gap:12px; padding:16px 0; border-bottom:1px solid var(--line);
+  }
+  .advice-item:last-child{ border-bottom:none; }
+  .advice-dot{
+    width:6px; height:6px; border-radius:50%; background:var(--accent-pink);
+    margin-top:8px; flex-shrink:0;
+  }
+  .advice-title{
+    font-size:15px; font-weight:700; margin:0 0 6px; color:var(--text);
+  }
+  .advice-body{
+    font-size:13.5px; line-height:1.85; color:var(--text-muted); margin:0;
+  }
+  .footer-nav{
+    display:flex; gap:8px; margin-top:22px; padding-top:18px; border-top:1px solid var(--line);
+  }
+  .footer-nav button{
+    flex:1; background:none; border:none; color:var(--text-faint);
+    font-size:11.5px; font-family:inherit; padding:6px 2px; cursor:pointer; border-radius:8px;
+  }
+  .footer-nav button.active{ color:var(--accent-pink); }
+  .history-item{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:13px 14px; border:1px solid var(--line); border-radius:13px; margin-bottom:10px;
+    cursor:pointer;
+  }
+  .history-item:hover{ border-color:var(--accent-pink-dim); }
+  .history-name{ font-size:14.5px; font-weight:600; }
+  .history-sub{ font-size:12px; color:var(--text-faint); margin-top:3px; }
+  .history-score{ font-size:20px; color:var(--accent-gold); font-family:"Hiragino Mincho ProN",serif; }
+  .history-delete{
+    font-size:11.5px; color:var(--text-faint); background:none; border:none;
+    font-family:inherit; cursor:pointer; padding:4px 0 0; text-decoration:underline;
+  }
+  .empty{
+    text-align:center; padding:30px 10px; color:var(--text-faint); font-size:13.5px; line-height:1.8;
+  }
+  .badge-premium{
+    font-size:10.5px; color:#241705; background:var(--accent-gold);
+    padding:2px 8px; border-radius:999px; margin-left:6px; font-weight:700; vertical-align:1px;
+  }
+</style>
+</head>
+<body>
+<div id="nebula">
+  <div class="nebula-blob" style="width:340px;height:340px;left:-60px;top:-40px;background:radial-gradient(circle, #ff6fa5, transparent 70%);"></div>
+  <div class="nebula-blob" style="width:300px;height:300px;right:-70px;top:10%;background:radial-gradient(circle, #f0c674, transparent 70%);animation-delay:-4s;"></div>
+  <div class="nebula-blob" style="width:380px;height:380px;left:10%;bottom:-100px;background:radial-gradient(circle, #9d4edd, transparent 70%);animation-delay:-8s;"></div>
+  <div class="nebula-blob" style="width:260px;height:260px;right:5%;bottom:-60px;background:radial-gradient(circle, #ff8fa8, transparent 70%);animation-delay:-2s;"></div>
+</div>
+<svg id="mystic-circle" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="320" cy="320" r="300" fill="none" stroke="#f0c674" stroke-width="1"/>
+  <circle cx="320" cy="320" r="250" fill="none" stroke="#ff8fa8" stroke-width="1" stroke-dasharray="4 10"/>
+  <circle cx="320" cy="320" r="200" fill="none" stroke="#f0c674" stroke-width="1"/>
+  <g fill="#f0c674">
+    <circle cx="320" cy="20" r="3"/>
+    <circle cx="320" cy="620" r="3"/>
+    <circle cx="20" cy="320" r="3"/>
+    <circle cx="620" cy="320" r="3"/>
+    <circle cx="108" cy="108" r="2.5"/>
+    <circle cx="532" cy="108" r="2.5"/>
+    <circle cx="108" cy="532" r="2.5"/>
+    <circle cx="532" cy="532" r="2.5"/>
+  </g>
+</svg>
+<div class="shooting-star" style="top:12%; left:8%; animation-delay:0s;"></div>
+<div class="shooting-star" style="top:28%; left:60%; animation-delay:3.5s;"></div>
+<div class="shooting-star" style="top:65%; left:15%; animation-delay:6.5s;"></div>
+<div id="stars"></div>
+<div class="shell">
+  <div id="app"></div>
+</div>
+
+<script>
+/* ---------- 星空背景 ---------- */
+(function(){
+  const wrap = document.getElementById('stars');
+  const n = 72;
+  for(let i=0;i<n;i++){
+    const s = document.createElement('div');
+    const isBright = Math.random() < 0.12;
+    s.className = 'star' + (isBright ? ' bright' : '');
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*4.5)+'s';
+    const size = isBright ? 3.5 : (Math.random()<0.25 ? 3:2);
+    s.style.width = size+'px'; s.style.height = size+'px';
+    wrap.appendChild(s);
+  }
+})();
+
+/* ---------- 状態 ---------- */
+const NOTE_ARTICLE_URL = 'https://note.com/like_swan6953/n/n1b5ed040b09a';
+
+const state = {
+  screen: 'start',
+  partner: { nickname:'', gender:'', age:'', relation:'', metVia:'' },
+  qIndex: 0,
+  answers: {},
+  scores: null,
+  resultTab: 'm3',
+  history: [],
+  historyLoaded: false,
+  historyLoading: false,
+  savedNicknames: [],
+  nicknamesLoaded: false,
+  editing: false
+};
+
+/* ---------- 質問データ ----------
+   各選択肢は関連する指標に加点する。
+   closeness: 距離の近さ / compatibility: 価値観の相性 / anxiety: 不安の強さ(高いほど悪い)
+   conflict: ケンカのリスク(高いほど悪い) / warmth: 相手の温かさ
+*/
+const QUESTIONS = [
+  { id:'contact_freq', text:'今の連絡頻度はどれくらいですか？', options:[
+    {label:'<strong class="hl">毎日</strong>やり取りしている', m:{closeness:90}},
+    {label:'週に<strong class="hl">数回</strong>くらい', m:{closeness:65}},
+    {label:'<strong class="hl">たまに</strong>、という感じ', m:{closeness:40}},
+    {label:'<strong class="hl">ほとんど連絡していない</strong>', m:{closeness:15}},
+  ]},
+  { id:'meet_freq', text:'会う頻度はどれくらいですか？', options:[
+    {label:'<strong class="hl">週1回以上</strong>会っている', m:{closeness:88}},
+    {label:'<strong class="hl">月2〜3回</strong>くらい', m:{closeness:63}},
+    {label:'<strong class="hl">月1回</strong>くらい', m:{closeness:38}},
+    {label:'<strong class="hl">ほとんど会えていない</strong>', m:{closeness:14}},
+  ]},
+  { id:'breakup_reason', text:'別れた原因は何だと思いますか？', conditional:(p)=>p.relation==='元恋人', options:[
+    {label:'<strong class="hl">価値観の違い</strong>', m:{compatibility:25, conflict:55}},
+    {label:'<strong class="hl">環境の変化</strong>（距離・忙しさなど）', m:{closeness:35, conflict:30}},
+    {label:'<strong class="hl">気持ちのすれ違い</strong>', m:{anxiety:60, conflict:45}},
+    {label:'その他・<strong class="hl">よくわからない</strong>', m:{anxiety:45, conflict:35}},
+  ]},
+  { id:'partner_personality', text:'相手の性格に一番近いものは？', options:[
+    {label:'<strong class="hl">優しくて</strong>穏やか', m:{warmth:88}},
+    {label:'<strong class="hl">マイペース</strong>で自由', m:{warmth:60}},
+    {label:'<strong class="hl">クール</strong>で感情を見せない', m:{warmth:42}},
+    {label:'<strong class="hl">情熱的</strong>で表現が強め', m:{warmth:70, conflict:20}},
+  ]},
+  { id:'my_style', text:'あなた自身の恋愛スタイルは？', options:[
+    {label:'相手に<strong class="hl">尽くす</strong>タイプ', m:{anxiety:55, compatibility:60}},
+    {label:'<strong class="hl">自立</strong>していて自分の時間も大事', m:{anxiety:20, compatibility:70}},
+    {label:'ちょっと<strong class="hl">依存気味</strong>かもしれない', m:{anxiety:70, compatibility:45}},
+    {label:'<strong class="hl">バランス</strong>を取れている方だと思う', m:{anxiety:25, compatibility:75}},
+  ]},
+  { id:'anxiety_level', text:'この関係について、不安になることは？', options:[
+    {label:'<strong class="hl">よくある</strong>', m:{anxiety:88}},
+    {label:'<strong class="hl">時々ある</strong>', m:{anxiety:58}},
+    {label:'<strong class="hl">あまりない</strong>', m:{anxiety:28}},
+    {label:'<strong class="hl">ほとんどない</strong>', m:{anxiety:12}},
+  ]},
+  { id:'fight_freq', text:'ケンカや気まずい空気になる頻度は？', options:[
+    {label:'<strong class="hl">よくある</strong>', m:{conflict:82}},
+    {label:'<strong class="hl">時々ある</strong>', m:{conflict:52}},
+    {label:'<strong class="hl">ほとんどない</strong>', m:{conflict:22}},
+    {label:'<strong class="hl">まだ</strong>そういう場面がない', m:{conflict:32}},
+  ]},
+  { id:'distance_feel', text:'相手との心の距離感は？', options:[
+    {label:'<strong class="hl">とても近い</strong>と感じる', m:{closeness:86}},
+    {label:'<strong class="hl">普通</strong>くらい', m:{closeness:60}},
+    {label:'<strong class="hl">やや距離</strong>を感じる', m:{closeness:36}},
+    {label:'<strong class="hl">距離がある</strong>と感じる', m:{closeness:16}},
+  ]},
+  { id:'values_match', text:'価値観の一致度はどれくらいですか？', options:[
+    {label:'<strong class="hl">とても近い</strong>と思う', m:{compatibility:90}},
+    {label:'<strong class="hl">まあ近い</strong>方だと思う', m:{compatibility:68}},
+    {label:'<strong class="hl">少し違う</strong>と感じる', m:{compatibility:40}},
+    {label:'<strong class="hl">かなり違う</strong>と感じる', m:{compatibility:16}},
+  ]},
+  { id:'partner_warmth', text:'相手の優しさ・冷たさについては？', options:[
+    {label:'<strong class="hl">とても優しい</strong>と感じる', m:{warmth:90}},
+    {label:'<strong class="hl">優しい</strong>方だと思う', m:{warmth:70}},
+    {label:'<strong class="hl">普通</strong>', m:{warmth:50}},
+    {label:'<strong class="hl">冷たい</strong>と感じることがある', m:{warmth:22}},
+  ]},
+  { id:'reply_speed', text:'相手からの返信スピードの傾向は？', options:[
+    {label:'<strong class="hl">いつもすぐ</strong>返ってくる', m:{closeness:80, anxiety:15}},
+    {label:'<strong class="hl">数時間以内</strong>には返ってくる', m:{closeness:62, anxiety:30}},
+    {label:'<strong class="hl">半日以上</strong>かかることが多い', m:{closeness:38, anxiety:50}},
+    {label:'<strong class="hl">バラバラ</strong>で予測できない', m:{closeness:34, anxiety:65}},
+  ]},
+  { id:'love_view', text:'相手の恋愛観に近いものは？', options:[
+    {label:'<strong class="hl">自立</strong>していて安定している', m:{compatibility:75, anxiety:15}},
+    {label:'<strong class="hl">軽やか</strong>で縛られたくないタイプ', m:{compatibility:42, anxiety:55}},
+    {label:'<strong class="hl">重め</strong>・とても本気なタイプ', m:{compatibility:58, conflict:35}},
+    {label:'<strong class="hl">依存</strong>されやすい・依存しやすいタイプ', m:{compatibility:48, anxiety:50}},
+  ]},
+];
+
+function activeQuestions(){
+  return QUESTIONS.filter(q => !q.conditional || q.conditional(state.partner));
+}
+
+/* ---------- スコア計算 ---------- */
+function computeScores(){
+  const totals = { closeness:[], compatibility:[], anxiety:[], conflict:[], warmth:[] };
+  activeQuestions().forEach(q=>{
+    const ansIdx = state.answers[q.id];
+    if(ansIdx===undefined) return;
+    const m = q.options[ansIdx].m || {};
+    Object.keys(m).forEach(k=> totals[k].push(m[k]));
+  });
+  const avg = (arr, fallback)=> arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : fallback;
+  const closeness = avg(totals.closeness, 50);
+  const compatibility = avg(totals.compatibility, 50);
+  const anxiety = avg(totals.anxiety, 50);
+  const conflict = avg(totals.conflict, 40);
+  const warmth = avg(totals.warmth, 50);
+  const stability = Math.round((closeness + compatibility + warmth + (100-anxiety) + (100-conflict)) / 5);
+  return { closeness, compatibility, anxiety, conflict, warmth, stability };
+}
+
+/* ---------- 未来の物語生成 ---------- */
+function buildFuture(){
+  const s = state.scores;
+  const name = state.partner.nickname || 'その人';
+
+  const distanceChange = s.closeness>=65 ? '少し近づく' : s.closeness>=40 ? '変わらない' : '遠くなる';
+  const contactChange = s.stability>=60 ? '増える' : s.stability>=40 ? '変わらない' : '減る';
+  const anxietyChange = s.anxiety<40 ? '落ち着く' : s.anxiety<=65 ? '少し残る' : '強くなる';
+
+  let fightPoint = '価値観の違い';
+  const worst = Math.max(100-s.compatibility, 100-s.closeness, s.anxiety);
+  if(worst === s.anxiety) fightPoint = 'あなたの不安';
+  else if(worst === 100-s.closeness) fightPoint = '連絡頻度のズレ';
+
+  const stabilityWord = s.stability>=70 ? '安定' : s.stability>=45 ? '曖昧' : '不安定';
+  const outcomeWord = s.stability>=70 ? '穏やかに続く' : s.stability>=45 ? '距離を保つ' : '少しずつ離れる';
+
+  const m3State = s.closeness>=65 ? '距離が近づく' : s.closeness>=40 ? '変わらない' : '遠くなる';
+  const m6Phase = s.stability>=70 ? '安定期' : s.stability>=45 ? 'すれ違い期' : '停滞期';
+  const y1Outcome = s.stability>=70 ? '継続' : s.stability>=45 ? '曖昧化' : '距離が開く';
+
+  const trendTag = s.stability>=70 ? '安定' : s.stability>=45 ? '曖昧' : '距離が開く';
+
+  const vars = { distanceChange, contactChange, anxietyChange, fightPoint, stabilityWord, outcomeWord, m6Phase, outcomeWord };
+  const relationType = state.partner.relation;
+
+  const story3 = buildPeriodSections('m3', s, name, relationType, vars);
+  const story6 = buildPeriodSections('m6', s, name, relationType, vars);
+  const story12 = buildPeriodSections('y1', s, name, relationType, vars);
+
+  const advice = buildAdviceDetailed(s, relationType, name);
+  const breakdown = buildScoreBreakdown(s);
+  const summary = buildOverallSummary(s, relationType, name);
+  const radar = [
+    { label:'距離の近さ', value:s.closeness },
+    { label:'価値観の相性', value:s.compatibility },
+    { label:'相手の温かさ', value:s.warmth },
+    { label:'心の安定', value:100-s.anxiety },
+    { label:'衝突の少なさ', value:100-s.conflict },
+  ];
+
+  return { m3State, m6Phase, y1Outcome, trendTag, story3, story6, story12, advice, breakdown, summary, radar };
+}
+
+/* ---------- レーダーチャート（五角形）生成 ---------- */
+function buildRadarChart(items){
+  const size = 300;
+  const cx = size/2, cy = size/2 - 4;
+  const maxR = 86;
+  const n = items.length;
+  const angleFor = i => -90 + i*(360/n);
+  const pt = (angleDeg, r) => {
+    const rad = angleDeg*Math.PI/180;
+    return { x: cx + r*Math.cos(rad), y: cy + r*Math.sin(rad) };
+  };
+
+  const ringFractions = [0.2,0.4,0.6,0.8,1.0];
+  const gridPolys = ringFractions.map(frac=>{
+    const pts = items.map((_,i)=> pt(angleFor(i), maxR*frac));
+    return `<polygon points="${pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')}" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`;
+  }).join('');
+
+  const axisLines = items.map((_,i)=>{
+    const p = pt(angleFor(i), maxR);
+    return `<line x1="${cx}" y1="${cy}" x2="${p.x.toFixed(1)}" y2="${p.y.toFixed(1)}" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>`;
+  }).join('');
+
+  const dataPts = items.map((it,i)=> pt(angleFor(i), (Math.max(0,Math.min(100,it.value))/100)*maxR));
+  const dataPolyPoints = dataPts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const dots = dataPts.map(p=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="#f0c674"/>`).join('');
+
+  const labels = items.map((it,i)=>{
+    const angle = angleFor(i);
+    const labelPt = pt(angle, maxR+36);
+    const cosv = Math.cos(angle*Math.PI/180);
+    let anchor = 'middle';
+    if(cosv > 0.3) anchor='start';
+    else if(cosv < -0.3) anchor='end';
+    return `
+      <text x="${labelPt.x.toFixed(1)}" y="${(labelPt.y-4).toFixed(1)}" text-anchor="${anchor}" font-size="11.5" fill="#a89bc9">${it.label}</text>
+      <text x="${labelPt.x.toFixed(1)}" y="${(labelPt.y+12).toFixed(1)}" text-anchor="${anchor}" font-size="13.5" font-weight="700" fill="#f3eef9">${it.value}</text>
+    `;
+  }).join('');
+
+  return `
+    <svg viewBox="0 0 ${size} ${size}" style="width:100%;max-width:300px;display:block;margin:0 auto;overflow:visible;">
+      ${gridPolys}
+      ${axisLines}
+      <polygon points="${dataPolyPoints}" fill="rgba(255,143,168,0.28)" stroke="#ff8fa8" stroke-width="2"/>
+      ${dots}
+      ${labels}
+    </svg>
+  `;
+}
+
+/* ---------- 期間ごとの未来ストーリー詳細セクション ---------- */
+/* good/mid/low それぞれ [3ヶ月後, 半年後, 1年後] の順で、期間ごとに内容が進行する配列 */
+const EVENT_SCENARIOS = {
+  '片想い': {
+    good: [
+      '相手から<strong class="hl">自然に話しかけられる</strong>回数が少しずつ増え、共通の話題で盛り上がる場面が出てきます。',
+      '二人だけで話す時間が生まれ、既読がすぐつく日が増えるなど、<strong class="hl">距離が縮まるサイン</strong>が増えていきます。',
+      '気づけば<strong class="hl">「特別な存在」として意識される</strong>ようになり、関係の変化を考えるタイミングが訪れます。'
+    ],
+    mid: [
+      '仲の良さは保たれるものの、<strong class="hl">相手からの発信を待つばかり</strong>で進展のきっかけが少ない時期です。',
+      '関係が<strong class="hl">友達以上恋人未満のライン</strong>で足踏みが続き、モヤモヤした気持ちを抱えやすくなります。',
+      '関係が大きく変わらないまま、<strong class="hl">片想いという立ち位置が定着</strong>してしまう可能性があります。'
+    ],
+    low: [
+      '相手との接点が減り、連絡への<strong class="hl">反応が薄く</strong>感じられる場面が出てきます。',
+      '共通の話題を見つけにくくなり、<strong class="hl">気持ちだけが先行</strong>してしまう時期が続きます。',
+      '関係の進展が見られないまま、<strong class="hl">気持ちの整理を考える</strong>タイミングが訪れるかもしれません。'
+    ]
+  },
+  '交際中': {
+    good: [
+      'お互いの予定を自然に共有し合い、<strong class="hl">将来の話</strong>も軽い雑談として出てくるようになります。',
+      'ケンカをしても<strong class="hl">仲直りまでの時間が短く</strong>なり、安心して意見を言い合える関係に育っていきます。',
+      'お互いにとって<strong class="hl">「当たり前の存在」</strong>として、安定した信頼関係が築かれていきます。'
+    ],
+    mid: [
+      '楽しい時間はありつつも、連絡や会う頻度に<strong class="hl">ムラが出やすい</strong>時期です。',
+      'ちょっとした一言がすれ違いのきっかけになり、<strong class="hl">気持ちの確認をしたくなる</strong>場面が増えます。',
+      '関係を続けるかどうか、<strong class="hl">お互いに一度立ち止まって考える</strong>タイミングが訪れやすくなります。'
+    ],
+    low: [
+      'すれ違いや連絡不足から、<strong class="hl">気持ちの確認をしたくなる</strong>場面が増えます。',
+      '会っていても会話が減り、<strong class="hl">以前より気を遣うようになった</strong>と感じることが増えます。',
+      '関係を続けるかどうか、<strong class="hl">どちらかが答えを出さなければならない</strong>時期が近づきます。'
+    ]
+  },
+  '元恋人': {
+    good: [
+      '共通の知人を介さずに<strong class="hl">直接連絡を取り合える</strong>機会が増えていきます。',
+      '過去の話題も、<strong class="hl">責め合うのではなく振り返り</strong>として話せるようになります。',
+      '当時とは違う、<strong class="hl">落ち着いた形での関係の再構築</strong>が見えてくる時期です。'
+    ],
+    mid: [
+      '連絡は続いているものの、<strong class="hl">関係の位置づけがはっきりしない</strong>まま時間が過ぎやすい時期です。',
+      '友達なのか、それ以上を目指しているのか、<strong class="hl">お互い探り合う</strong>ような場面が続きます。',
+      'このままの関係を続けるのか、<strong class="hl">はっきりさせるのか判断を求められる</strong>時期が訪れます。'
+    ],
+    low: [
+      '連絡の頻度が徐々に減り、<strong class="hl">過去の出来事を蒸し返してしまう</strong>場面が出てきます。',
+      '復縁を意識するほど、<strong class="hl">かえって相手が距離を取る</strong>ように感じられることがあります。',
+      '関係が<strong class="hl">自然消滅に近づき</strong>、気持ちの整理をつける時期が訪れるかもしれません。'
+    ]
+  },
+  '曖昧な関係': {
+    good: [
+      '会う頻度や連絡の質が安定し、<strong class="hl">お互いにとって特別な存在</strong>だと感じられる場面が増えます。',
+      '将来的に<strong class="hl">はっきりさせる話題</strong>も、自然と出やすくなっていきます。',
+      '曖昧さが解消され、<strong class="hl">関係に名前がつく形</strong>に落ち着いていく可能性があります。'
+    ],
+    mid: [
+      '心地よい関係は続くものの、<strong class="hl">「これは何なのか」を聞けないまま</strong>時間が過ぎやすい時期です。',
+      '<strong class="hl">他の人の存在が気になり始める</strong>こともあるかもしれません。',
+      '曖昧なまま関係が長引き、<strong class="hl">どちらかが答えを求める</strong>タイミングが訪れます。'
+    ],
+    low: [
+      '連絡や会う頻度が不安定になり、<strong class="hl">フェードアウトに近づくサイン</strong>が出てきます。',
+      '曖昧さに耐えられなくなり、<strong class="hl">あなたから距離を置きたくなる</strong>場面が増えます。',
+      '関係が<strong class="hl">自然に終わっていく</strong>可能性が高くなります。'
+    ]
+  },
+  '友達': {
+    good: [
+      '二人きりで会う機会や、<strong class="hl">少し踏み込んだ話をする場面</strong>が自然に増えていきます。',
+      '周りから<strong class="hl">「実はいい感じなのでは」</strong>と言われることも出てくるかもしれません。',
+      '友達から<strong class="hl">一歩進んだ関係</strong>へと、自然に変化していく可能性が出てきます。'
+    ],
+    mid: [
+      '仲の良い友達という関係は続くものの、<strong class="hl">進展の決定的なきっかけが生まれにくい</strong>時期です。',
+      '<strong class="hl">他の友人関係と大きく変わらない</strong>距離感が続きます。',
+      '友達としての関係が定着し、<strong class="hl">そのままの形で続いていく</strong>可能性が高くなります。'
+    ],
+    low: [
+      '会う頻度や連絡が<strong class="hl">徐々に減って</strong>いきます。',
+      '<strong class="hl">数ある友人の一人という立ち位置</strong>に落ち着きやすくなります。',
+      '関係を変えたい気持ちがあるなら、<strong class="hl">動くタイミングを逃さない</strong>ことが大切です。'
+    ]
+  }
+};
+
+function eventExamples(period, s, relationType, name){
+  const tier = s.stability>=70 ? 'good' : s.stability>=45 ? 'mid' : 'low';
+  const idx = period==='m3' ? 0 : period==='m6' ? 1 : 2;
+  const arr = (EVENT_SCENARIOS[relationType] || EVENT_SCENARIOS['曖昧な関係'])[tier];
+  return arr[idx];
+}
+
+/* focus（不安・衝突・距離・価値観）×期間で、内容そのものが進行していく気をつけたいポイント */
+const CAUTION_TEXTS = {
+  anxiety: {
+    m3: '<strong class="hl">不安が膨らみやすい</strong>タイミングです。返信が少し遅いだけで悪い方向に考えすぎず、<strong class="hl">事実と想像を分けて</strong>捉えるようにしましょう。',
+    m6: '不安が<strong class="hl">積み重なりやすい</strong>時期です。ため込む前に、落ち着いたタイミングで<strong class="hl">気持ちを言葉にしておく</strong>と、大きな爆発を防げます。',
+    y1: '長期的に見ると、<strong class="hl">不安のコントロール</strong>が関係の継続を左右します。一人で抱え込まず、相談できる相手を持つことも大切です。'
+  },
+  conflict: {
+    m3: '<strong class="hl">感情がぶつかりやすい</strong>タイミングです。伝え方ひとつですれ違いが大きくもなり得ますが、逆に小さくも抑えられます。',
+    m6: '小さなすれ違いが<strong class="hl">積み重なりやすい</strong>時期です。都度きちんと向き合うか、後回しにするかで、この先の空気が大きく変わります。',
+    y1: '衝突のパターンが<strong class="hl">定着しやすい</strong>時期です。同じすれ違いを繰り返していないか、一度立ち止まって振り返ってみましょう。'
+  },
+  closeness: {
+    m3: '<strong class="hl">物理的・心理的な距離が開きやすい</strong>タイミングです。意識的に連絡や予定を作らないと、自然とフェードアウトに近づいてしまう可能性があります。',
+    m6: '距離が<strong class="hl">定着してしまいやすい</strong>時期です。今のうちに、会う頻度や連絡のリズムを見直しておくと、この先の分岐が変わります。',
+    y1: '距離の開き方が、<strong class="hl">関係の結末に直結する</strong>時期です。取り戻したい気持ちがあるなら、早めに行動に移すことが重要です。'
+  },
+  compatibility: {
+    m3: '<strong class="hl">価値観の違いが表面化しやすい</strong>タイミングです。違いを「合わない」と決めつけず、背景にある考え方を聞く姿勢が関係を左右します。',
+    m6: '価値観のズレが<strong class="hl">積み重なりやすい</strong>時期です。すり合わせを避け続けると、関係の土台が揺らぎやすくなります。',
+    y1: '価値観の違いへの<strong class="hl">向き合い方</strong>が、この先の関係を大きく左右する時期です。違いを認め合えるかどうかが分岐点になります。'
+  }
+};
+
+function cautionText(period, s){
+  const worst = Math.max(100-s.compatibility, 100-s.closeness, s.anxiety, s.conflict);
+  let focus = 'compatibility';
+  if(worst === s.anxiety) focus = 'anxiety';
+  else if(worst === s.conflict) focus = 'conflict';
+  else if(worst === 100-s.closeness) focus = 'closeness';
+  return CAUTION_TEXTS[focus][period];
+}
+
+function buildPeriodSections(period, s, name, relationType, vars){
+  const sections = [];
+  if(period==='m3'){
+    sections.push({
+      type:'overview',
+      title:'この3ヶ月で起こりやすい流れ',
+      body:`まず連絡の面では、頻度が<strong class="hl">${vars.contactChange}</strong>方向に動きやすいタイミングです。心理的な距離は<strong class="hl">${vars.distanceChange}</strong>と感じるようになり、それに伴ってあなたの不安は<strong class="hl">${vars.anxietyChange}</strong>へと変化していきます。急激な変化というより、日々のやり取りの積み重ねの中で少しずつ空気が変わっていくイメージです。`
+    });
+  } else if(period==='m6'){
+    sections.push({
+      type:'overview',
+      title:'半年後の関係の空気感',
+      body:`半年というスパンで見ると、関係は「<strong class="hl">${vars.m6Phase}</strong>」に入りやすい傾向があります。<strong class="hl">${vars.fightPoint}</strong>をきっかけに、小さなすれ違いが表面化することがありますが、これは関係が次の段階に進む前の自然な調整期間でもあります。歩み寄り方次第で、ここから関係は<strong class="hl">${vars.stabilityWord}</strong>な方向にも、そうでない方向にも動きます。`
+    });
+  } else {
+    sections.push({
+      type:'overview',
+      title:'1年後、関係が落ち着く先',
+      body:`1年というスパンで見たとき、あなたと${name}の関係は「<strong class="hl">${vars.outcomeWord}</strong>」という形に落ち着きやすいと出ています。これは今の傾向がこのまま続いた場合の見立てであり、途中の関わり方次第で結末は変わっていきます。特にこの3ヶ月・半年の過ごし方が、この先の分岐点になります。`
+    });
+  }
+  sections.push({ type:'event', title:'具体的に起こりやすい出来事', body: eventExamples(period, s, relationType, name) });
+  sections.push({ type:'caution', title:'この時期に気をつけたいこと', body: cautionText(period, s) });
+  return sections;
+}
+
+/* ---------- スコア内訳・総評 ---------- */
+const BREAKDOWN_DEFS = [
+  { key:'closeness', label:'距離感', texts:[
+      '物理的にも心理的にも距離が近く、日常的なつながりが強い状態です。',
+      'ある程度の距離感はありますが、極端に遠いわけではありません。',
+      '連絡や接点が少なく、心理的な距離を感じやすい状態です。'
+  ]},
+  { key:'compatibility', label:'価値観の相性', texts:[
+      '物事の考え方や大切にしているものが近く、話が噛み合いやすい相性です。',
+      '合う部分と違う部分が混在しており、対話次第で印象が変わる相性です。',
+      '価値観の違いを感じやすく、意識的なすり合わせが必要な相性です。'
+  ]},
+  { key:'warmth', label:'相手の温かさ', texts:[
+      '相手からの態度に優しさや思いやりを感じやすい状態です。',
+      '優しさは感じつつも、時にクールに見える一面もある状態です。',
+      '相手の言動を冷たく感じる場面が多くなっている状態です。'
+  ]},
+  { key:'anxiety', label:'不安の強さ', texts:[
+      '不安を感じる場面が多く、心が落ち着きにくい状態です。',
+      '時々不安になることはあるものの、コントロールできる範囲です。',
+      '不安は少なく、安定した気持ちで関係と向き合えています。'
+  ]},
+  { key:'conflict', label:'すれ違いリスク', texts:[
+      'ケンカやすれ違いが起こりやすく、注意が必要な状態です。',
+      '小さなすれ違いは起こり得ますが、大きな対立にはなりにくい状態です。',
+      '衝突が少なく、穏やかなやり取りができている状態です。'
+  ]},
+];
+
+function levelText(score, texts){
+  return score>=65 ? texts[0] : score>=35 ? texts[1] : texts[2];
+}
+
+function buildScoreBreakdown(s){
+  return BREAKDOWN_DEFS.map(def => ({
+    label: def.label,
+    value: s[def.key],
+    desc: levelText(s[def.key], def.texts)
+  }));
+}
+
+function buildOverallSummary(s, relationType, name){
+  const strengths = [];
+  const weaknesses = [];
+  if(s.closeness>=65) strengths.push('物理的にも心理的にも距離が近いこと');
+  else if(s.closeness<40) weaknesses.push('連絡や接点の少なさ');
+  if(s.compatibility>=65) strengths.push('価値観の相性の良さ');
+  else if(s.compatibility<40) weaknesses.push('価値観の違い');
+  if(s.warmth>=65) strengths.push('相手の優しさ');
+  else if(s.warmth<40) weaknesses.push('相手の態度に冷たさを感じやすいこと');
+  if(s.anxiety<35) strengths.push('気持ちが安定していること');
+  else if(s.anxiety>=65) weaknesses.push('不安が大きくなりやすいこと');
+  if(s.conflict<30) strengths.push('衝突の少なさ');
+  else if(s.conflict>=55) weaknesses.push('すれ違いやケンカのリスク');
+
+  const strengthPhrase = strengths.length ? strengths.slice(0,2).join('と') : null;
+  const weaknessPhrase = weaknesses.length ? weaknesses.slice(0,2).join('や') : null;
+
+  const strengthText = strengthPhrase
+    ? `<strong class="hl">${strengthPhrase}</strong>が、この関係の大きな強みです。`
+    : '際立った強みよりも、これから育てていく<strong class="hl">伸びしろ</strong>が多い関係です。';
+  const weaknessText = weaknessPhrase
+    ? `<strong class="hl">${weaknessPhrase}</strong>には、意識的に向き合う必要がありそうです。`
+    : '大きな不安要素は見当たらず、比較的落ち着いた土台があります。';
+
+  return `${name}との関係は、総合安定度<strong class="hl">${s.stability}点</strong>という結果になりました。${strengthText}一方で、${weaknessText}「<strong class="hl">${relationType||'今の関係性'}</strong>」という現在地を踏まえると、焦らず今のペースを大切にしながら関わっていくことが、良い未来につながりやすいでしょう。`;
+}
+
+/* ---------- アドバイス詳細生成 ---------- */
+function buildAdviceDetailed(s, relationType, name){
+  const items = [];
+
+  if(s.closeness < 45){
+    items.push({
+      title:'連絡と会う頻度を、少しずつ増やしてみる',
+      body:`今は連絡や会う機会が少なめで、距離を感じやすい時期です。急に頻度を変えようとせず、「<strong class="hl">週に1往復増やす</strong>」「<strong class="hl">月1回でも会う予定を決める</strong>」など、小さな一歩から積み重ねていくと自然です。相手のペースを急に崩さないよう、様子を見ながら調整してください。`
+    });
+  } else if(s.closeness < 70){
+    items.push({
+      title:'今のペースを大切にしつつ、やり取りの質を上げる',
+      body:`連絡や会う頻度は悪くありません。回数を増やすことよりも、<strong class="hl">会話の深さ</strong>や、<strong class="hl">返信の中身を丁寧にする</strong>ことを意識すると、関係の温度がもう一段上がりやすくなります。`
+    });
+  } else {
+    items.push({
+      title:'今の近さを保ちながら、依存しすぎない距離感を',
+      body:`連絡も会う頻度も十分に近い状態です。この近さは大きな強みですが、近すぎることで息苦しさが生まれることもあります。<strong class="hl">お互いの一人の時間</strong>も意識的に確保すると、この良い距離感が長続きします。`
+    });
+  }
+
+  if(s.anxiety >= 65){
+    items.push({
+      title:'不安なときほど、感情的なメッセージを送らない',
+      body:`不安が強くなっている時期のようです。不安なまま送ったメッセージは、意図と違う形で相手に伝わりやすくなります。<strong class="hl">送る前に一度時間を置く</strong>、気持ちをメモに書き出してから要点だけ伝える、といった工夫で、不安をそのままぶつけることを避けられます。`
+    });
+  } else if(s.anxiety>=35){
+    items.push({
+      title:'不安を感じたら、ため込まず言葉にする',
+      body:`時々不安になることがあるようですが、それ自体は自然なことです。溜め込みすぎず、落ち着いているタイミングで「<strong class="hl">最近ちょっと不安に感じることがある</strong>」と軽く共有できると、関係の中で安心材料が増えていきます。`
+    });
+  } else {
+    items.push({
+      title:'今の落ち着いた感覚を、たまに言葉にして伝える',
+      body:`不安はあまり大きくないようです。安心できている今の気持ちを、たまで良いので相手に伝えると、相手にとっても関係の状態が見えやすくなり、<strong class="hl">お互いの安心感</strong>がさらに強まります。`
+    });
+  }
+
+  if(s.conflict>=55){
+    items.push({
+      title:'会う前に「話したいこと」を整理しておく',
+      body:`すれ違いや気まずさが起きやすい時期です。感情がぶつかる前に、話したい内容を一度整理し、「何を伝えたいか」「何を決めたいか」を明確にしてから会話すると、感情的な衝突を減らせます。<strong class="hl">相手を試すような言い回しは避ける</strong>ことが、今は特に大切です。`
+    });
+  } else if(s.conflict>=30){
+    items.push({
+      title:'小さな違和感は、その日のうちに軽く共有する',
+      body:`大きなケンカにはなりにくいものの、小さなすれ違いが積み重なるとやがて大きくなります。気になったことはその日のうちに、責めるトーンではなく「<strong class="hl">気になった</strong>」というトーンで軽く伝えておくと、蓄積を防げます。`
+    });
+  } else {
+    items.push({
+      title:'穏やかな今の関係を、当たり前にしすぎない',
+      body:`大きな衝突は起きにくい状態です。ただ、安定しているからこそ感謝や気遣いを言葉にする機会が減りがちです。「<strong class="hl">ありがとう</strong>」を意識して伝えるだけでも、この穏やかさはより長持ちします。`
+    });
+  }
+
+  if(s.compatibility<50){
+    items.push({
+      title:'価値観の違いは、否定せずにまず知ることから',
+      body:`価値観の一致度がやや低めに出ています。違いがあること自体は問題ではなく、それをどう扱うかが大切です。「<strong class="hl">なぜそう考えるのか</strong>」を否定せずに聞く姿勢を持つと、違いが対立ではなく理解に変わっていきます。`
+    });
+  } else {
+    items.push({
+      title:'一致している価値観を、意識的に言葉にする',
+      body:`価値観は比較的近い方です。似ている部分を「<strong class="hl">私たちってこういうところ似てるね</strong>」と会話の中で確認し合うと、関係の土台がより明確になり、今後のすれ違いも起きにくくなります。`
+    });
+  }
+
+  items.push({
+    title:'自分の時間や好きなことを手放さない',
+    body:`関係に集中するあまり、<strong class="hl">自分の時間や趣味、友人関係</strong>が後回しになっていないか振り返ってみてください。あなた自身が満たされている状態でいることが、結果的に関係の安定にもつながります。`
+  });
+
+  const relationAdvice = {
+    '片想い': {
+      title:'関係を進めたいなら、小さな共有から始める',
+      body:`今はまだ片想いの段階です。急に距離を詰めようとするより、<strong class="hl">共通の話題や小さな相談ごと</strong>を通じて、自然に接点を増やしていくのが無理のない進め方です。相手の反応を見ながら、少しずつ関係を進めてみてください。`
+    },
+    '交際中': {
+      title:'「これから」の話を、たまにしてみる',
+      body:`交際中の今だからこそ、<strong class="hl">将来の予定や関係の方向性</strong>について、軽い雑談レベルで良いので話してみると、お互いの認識のズレを早めに見つけられます。`
+    },
+    '元恋人': {
+      title:'復縁を焦らず、まずは信頼を取り戻すことから',
+      body:`元恋人との関係は、過去の出来事の扱い方が今後を左右します。すぐに「戻りたい」と伝えるより、まずは<strong class="hl">連絡のしやすさや信頼感を取り戻す</strong>ことを優先すると、無理のない形で関係を再構築できます。`
+    },
+    '曖昧な関係': {
+      title:'「はっきりさせるタイミング」を自分の中で決めておく',
+      body:`曖昧な関係が長引くと、不安が蓄積しやすくなります。<strong class="hl">いつまでにどうしたいか</strong>、自分の中で期限や基準を持っておくと、感情に流されすぎずに次の行動を選べるようになります。`
+    },
+    '友達': {
+      title:'関係を変えたいかどうか、自分の気持ちを先に整理する',
+      body:`友達としての関係を続けたいのか、それ以上を望んでいるのか、まずは<strong class="hl">自分の気持ちをはっきりさせる</strong>ことが最初の一歩です。焦って伝えるより、今の関係の心地よさを保ちながらタイミングを見極めてください。`
+    }
+  };
+  if(relationAdvice[relationType]) items.push(relationAdvice[relationType]);
+
+  return items;
+}
+
+/* ---------- 画面遷移ヘルパ ---------- */
+async function goto(screen){
+  state.screen = screen;
+  if(screen==='input' && !state.nicknamesLoaded){
+    state.savedNicknames = await loadSavedNicknames();
+    state.nicknamesLoaded = true;
+  }
+  if(screen==='history' && !state.historyLoaded){
+    state.historyLoading = true;
+    render();
+    const loaded = await loadHistoryFromStorage();
+    // すでに今回の診断でメモリ上に追加された分は保持しつつ、保存分と重複しないよう統合する
+    const existingKeys = new Set(state.history.map(h=>h.key).filter(Boolean));
+    const merged = [...state.history];
+    loaded.forEach(entry=>{
+      if(!existingKeys.has(entry.key)) merged.push(entry);
+    });
+    merged.sort((a,b)=> (b.timestamp||0) - (a.timestamp||0));
+    state.history = merged;
+    state.historyLoaded = true;
+    state.historyLoading = false;
+  }
+  render();
+  window.scrollTo(0,0);
+}
+
+/* ---------- 診断結果の永続保存 ----------
+   Claudeのアーティファクト内では window.storage を使い、
+   GitHub Pages / Vercel などの一般的な環境では localStorage に
+   自動でフォールバックする（同じインターフェースのラッパー）。
+*/
+const storageAPI = (function(){
+  if(typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function'){
+    return window.storage;
+  }
+  return {
+    async get(key){
+      const v = localStorage.getItem(key);
+      if(v===null) throw new Error('key not found: ' + key);
+      return { key, value:v, shared:false };
+    },
+    async set(key, value){
+      localStorage.setItem(key, value);
+      return { key, value, shared:false };
+    },
+    async delete(key){
+      localStorage.removeItem(key);
+      return { key, deleted:true, shared:false };
+    },
+    async list(prefix){
+      const keys = [];
+      for(let i=0;i<localStorage.length;i++){
+        const k = localStorage.key(i);
+        if(k && (!prefix || k.startsWith(prefix))) keys.push(k);
+      }
+      return { keys, prefix };
+    }
+  };
+})();
+
+async function saveResultToStorage(entry){
+  try{
+    const result = await storageAPI.set(entry.key, JSON.stringify(entry), false);
+    if(!result){ console.error('診断結果の保存に失敗しました'); }
+  }catch(e){
+    console.error('Storage save error:', e);
+  }
+}
+
+async function loadSavedNicknames(){
+  try{
+    const r = await storageAPI.get('saved_nicknames', false);
+    if(r && r.value) return JSON.parse(r.value);
+  }catch(e){
+    // まだ保存されていない場合はここに来る
+  }
+  return [];
+}
+
+async function persistSavedNicknames(){
+  try{
+    await storageAPI.set('saved_nicknames', JSON.stringify(state.savedNicknames), false);
+  }catch(e){
+    console.error('Nickname save error:', e);
+  }
+}
+
+function saveCurrentNickname(){
+  const name = state.partner.nickname.trim();
+  if(!name) return;
+  if(!state.savedNicknames.includes(name)){
+    state.savedNicknames.unshift(name);
+    render();
+    persistSavedNicknames();
+  }
+}
+
+function selectNickname(name){
+  state.partner.nickname = name;
+  render();
+}
+
+function deleteSavedNickname(name){
+  state.savedNicknames = state.savedNicknames.filter(n => n!==name);
+  render();
+  persistSavedNicknames();
+}
+
+async function loadHistoryFromStorage(){
+  try{
+    const listResult = await storageAPI.list('diagnosis:', false);
+    if(!listResult || !listResult.keys) return [];
+    const entries = [];
+    for(const key of listResult.keys){
+      try{
+        const r = await storageAPI.get(key, false);
+        if(r && r.value){
+          const parsed = JSON.parse(r.value);
+          parsed.key = key;
+          entries.push(parsed);
+        }
+      }catch(e){
+        // 壊れているデータはスキップ
+      }
+    }
+    entries.sort((a,b)=> (b.timestamp||0) - (a.timestamp||0));
+    return entries;
+  }catch(e){
+    console.error('Storage load error:', e);
+    return [];
+  }
+}
+
+async function deleteResultFromStorage(key){
+  try{
+    await storageAPI.delete(key, false);
+  }catch(e){
+    console.error('Storage delete error:', e);
+  }
+}
+
+/* ---------- レンダリング ---------- */
+function render(){
+  const app = document.getElementById('app');
+  app.innerHTML = screens[state.screen]();
+}
+
+const screens = {
+
+  start(){
+    return `
+      <div class="card">
+        <div class="moonmark"></div>
+        <p class="kicker">FUTURE LOVE READING</p>
+        <h1 class="title serif">未来予想図</h1>
+        <p class="lead">今のふたりの関係を、いくつかの質問だけで占います。3ヶ月後・半年後・1年後——月が満ちていくように、この先の関係の姿を映し出します。</p>
+        <div class="stack">
+          <button class="btn btn-primary" onclick="startFlow()">診断をはじめる</button>
+          <button class="btn btn-ghost" onclick="goto('history')">過去の診断結果を見る</button>
+        </div>
+      </div>
+    `;
+  },
+
+  history(){
+    const items = state.history;
+    return `
+      <div class="card">
+        <p class="kicker">RECORDS</p>
+        <h1 class="title serif">過去の診断結果</h1>
+        <p class="lead" style="margin-bottom:18px;">診断結果は自動的に保存され、次回もここから見返せます。</p>
+        ${state.historyLoading ? `
+          <div class="empty">読み込み中です…</div>
+        ` : items.length===0 ? `
+          <div class="empty">まだ診断結果がありません。<br>診断をはじめると、ここに記録が残ります。</div>
+        ` : items.map((h,i)=>`
+          <div class="history-item">
+            <div style="flex:1;cursor:pointer;" onclick="viewHistory(${i})">
+              <div class="history-name">${escapeHtml(h.partner.nickname || '名前未設定')}</div>
+              <div class="history-sub">${h.future.trendTag} ・ ${h.date}</div>
+              <button class="history-delete" onclick="event.stopPropagation(); deleteHistoryItem(${i})">削除</button>
+            </div>
+            <div class="history-score" style="cursor:pointer;" onclick="viewHistory(${i})">${h.scores.stability}</div>
+          </div>
+        `).join('')}
+        <div class="divider"></div>
+        <button class="btn btn-ghost" onclick="goto('start')">戻る</button>
+      </div>
+    `;
+  },
+
+  input(){
+    const p = state.partner;
+    const canNext = p.nickname.trim().length>0 && p.relation;
+    return `
+      <div class="card">
+        <p class="kicker">STEP 1 / 3</p>
+        <h1 class="title serif">相手について教えてください</h1>
+        <p class="lead">わかる範囲で入力してください。</p>
+
+        <div class="field">
+          <label>相手のニックネーム</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="f-nickname" style="flex:1;" value="${escapeHtml(p.nickname)}" placeholder="例：はると" oninput="updatePartner('nickname', this.value)">
+            <button type="button" class="btn btn-ghost" style="width:auto;padding:0 16px;white-space:nowrap;" onclick="saveCurrentNickname()">保存</button>
+          </div>
+          ${state.savedNicknames.length>0 ? `
+            <div style="margin-top:10px;">
+              <div style="font-size:11.5px;color:var(--text-faint);margin-bottom:7px;">保存済みのニックネーム</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                ${state.savedNicknames.map(n=>`
+                  <span class="nickname-chip">
+                    <span onclick="selectNickname('${escapeJs(n)}')">${escapeHtml(n)}</span>
+                    <button type="button" onclick="deleteSavedNickname('${escapeJs(n)}')" aria-label="削除">×</button>
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="field">
+          <label>性別</label>
+          <select id="f-gender" onchange="updatePartner('gender', this.value)">
+            <option value="">選択しない</option>
+            <option value="男性" ${p.gender==='男性'?'selected':''}>男性</option>
+            <option value="女性" ${p.gender==='女性'?'selected':''}>女性</option>
+            <option value="回答しない" ${p.gender==='回答しない'?'selected':''}>回答しない</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>年齢層</label>
+          <select id="f-age" onchange="updatePartner('age', this.value)">
+            <option value="">選択しない</option>
+            <option value="10代" ${p.age==='10代'?'selected':''}>10代</option>
+            <option value="20代" ${p.age==='20代'?'selected':''}>20代</option>
+            <option value="30代" ${p.age==='30代'?'selected':''}>30代</option>
+            <option value="40代以上" ${p.age==='40代以上'?'selected':''}>40代以上</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>今の関係性</label>
+          <select id="f-relation" onchange="updatePartner('relation', this.value)">
+            <option value="">選択してください</option>
+            <option value="片想い" ${p.relation==='片想い'?'selected':''}>片想い</option>
+            <option value="交際中" ${p.relation==='交際中'?'selected':''}>交際中</option>
+            <option value="元恋人" ${p.relation==='元恋人'?'selected':''}>元恋人（復縁希望）</option>
+            <option value="曖昧な関係" ${p.relation==='曖昧な関係'?'selected':''}>曖昧な関係</option>
+            <option value="友達" ${p.relation==='友達'?'selected':''}>友達</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>出会い方</label>
+          <select id="f-met" onchange="updatePartner('metVia', this.value)">
+            <option value="">選択しない</option>
+            <option value="職場" ${p.metVia==='職場'?'selected':''}>職場</option>
+            <option value="学校" ${p.metVia==='学校'?'selected':''}>学校</option>
+            <option value="SNS" ${p.metVia==='SNS'?'selected':''}>SNS</option>
+            <option value="マッチングアプリ" ${p.metVia==='マッチングアプリ'?'selected':''}>マッチングアプリ</option>
+            <option value="その他" ${p.metVia==='その他'?'selected':''}>その他</option>
+          </select>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="goBackFromInput()">戻る</button>
+          <button class="btn btn-primary" id="btn-input-next" ${canNext?'':'disabled'} onclick="beginQuestions()">次へ</button>
+        </div>
+      </div>
+    `;
+  },
+
+  questions(){
+    const qs = activeQuestions();
+    const q = qs[state.qIndex];
+    const total = qs.length;
+    const pct = Math.round(((state.qIndex)/total)*100);
+    const selected = state.answers[q.id];
+    return `
+      <div class="card">
+        <p class="kicker">STEP 2 / 3 ・ 全${total}問</p>
+        <div class="progress-row">
+          <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <div class="progress-label">${state.qIndex+1} / ${total}</div>
+        </div>
+        ${state.qIndex===0 ? `
+          <p class="lead" style="margin-bottom:16px;">全${total}問です。1問あたり数秒で答えられます。直感で構いませんが、正直に・今の状態に近いものを選ぶほど、診断の精度が上がります。</p>
+        ` : ''}
+        <p class="q-text">${q.text}</p>
+        ${q.options.map((opt,i)=>`
+          <button class="option ${selected===i?'selected':''}" onclick="answerQuestion(${i})">${opt.label}</button>
+        `).join('')}
+        <div class="nav-row">
+          <button class="btn btn-ghost" onclick="prevQuestion()">戻る</button>
+          <button class="btn btn-primary" ${selected===undefined?'disabled':''} onclick="nextQuestion()">
+            ${state.qIndex === total-1 ? '結果を見る' : '次へ'}
+          </button>
+        </div>
+      </div>
+    `;
+  },
+
+  result(){
+    const s = state.scores, f = state.scores._future || (state.scores._future = buildFuture());
+    const p = state.partner;
+    return `
+      <div class="card">
+        <p class="kicker">STEP 3 / 3 ・ RESULT</p>
+        <h1 class="title serif">${escapeHtml(p.nickname||'その人')}との関係安定度</h1>
+        <div class="score-big">${s.stability}</div>
+        <div class="score-cap">/ 100</div>
+        <span class="tag">結末傾向：${f.trendTag}</span>
+
+        <div class="divider"></div>
+        <p class="lead" style="margin-bottom:10px;">総合診断</p>
+        <p class="story-text" style="color:var(--text-muted);">${f.summary}</p>
+
+        <div class="divider"></div>
+        <p class="lead" style="margin-bottom:6px;">5つの指標で見る今の関係</p>
+        <p style="font-size:12px;color:var(--text-faint);margin:0 0 14px;">外側に大きく広がるほど、良好な状態を示します。</p>
+        ${buildRadarChart(f.radar)}
+        <div style="margin-top:20px;"></div>
+        ${f.breakdown.map(b=>`
+          <div style="margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-faint);margin-bottom:6px;">
+              <span>${b.label}</span><span>${b.value}</span>
+            </div>
+            <div class="progress-track" style="margin-bottom:7px;"><div class="progress-fill" style="width:${b.value}%"></div></div>
+            <p style="font-size:13px;color:var(--text-muted);line-height:1.75;margin:0;">${b.desc}</p>
+          </div>
+        `).join('')}
+
+        <div class="divider"></div>
+        <button class="btn btn-ghost" onclick="editDiagnosis()">情報を編集する</button>
+
+        <div class="footer-nav">
+          <button class="active" onclick="goto('result')">結果</button>
+          <button onclick="goto('story')">未来ストーリー</button>
+          <button onclick="goto('advice')">アドバイス</button>
+          <button onclick="restart()">もう一度</button>
+        </div>
+      </div>
+    `;
+  },
+
+  story(){
+    const s = state.scores, f = s._future || (s._future = buildFuture());
+    const tab = state.resultTab;
+    const p = state.partner;
+
+    const tabDef = {
+      m3: { label:'3ヶ月後', moon:'moon-crescent', sections:f.story3 },
+      m6: { label:'半年後', moon:'moon-half', sections:f.story6 },
+      y1: { label:'1年後', moon:'moon-full', sections:f.story12 },
+    };
+    const current = tabDef[tab];
+
+    return `
+      <div class="card">
+        <p class="kicker">FUTURE STORY</p>
+        <h1 class="title serif">${escapeHtml(p.nickname||'その人')}との未来</h1>
+        <div class="tabs">
+          ${Object.entries(tabDef).map(([key,d])=>`
+            <div class="tab ${tab===key?'active':''}" onclick="setResultTab('${key}')">
+              <div class="moon ${d.moon}"></div>
+              <span>${d.label}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        ${tab === 'm3' ? (() => {
+          const ICONS = { overview:'\ud83c\udf19', event:'\u2726', caution:'\u26a0' };
+          return current.sections.map(sec=>`
+            <div class="story-card type-${sec.type}">
+              <div class="story-card-head">
+                <span class="story-card-icon">${ICONS[sec.type] || '\u2022'}</span>
+                <p class="advice-title" style="margin:0;">${sec.title}</p>
+              </div>
+              <p class="advice-body" style="margin:0;">${sec.body}</p>
+            </div>
+          `).join('');
+        })() : `
+          <div class="locked">
+            <p>「${tab==='m6'?'半年後':'1年後'}」の詳しいストーリーは、有料note記事で公開しています。</p>
+            <a class="cta-note" href="${NOTE_ARTICLE_URL}" target="_blank" rel="noopener">有料note記事で続きを読む</a>
+          </div>
+        `}
+
+        <div class="divider"></div>
+        <button class="btn btn-ghost" onclick="editDiagnosis()">情報を編集する</button>
+
+        <div class="footer-nav">
+          <button onclick="goto('result')">結果</button>
+          <button class="active" onclick="goto('story')">未来ストーリー</button>
+          <button onclick="goto('advice')">アドバイス</button>
+          <button onclick="restart()">もう一度</button>
+        </div>
+      </div>
+    `;
+  },
+
+  advice(){
+    const s = state.scores, f = s._future || (s._future = buildFuture());
+    const shown = f.advice.slice(0, 1);
+    const lockedCount = f.advice.length - shown.length;
+    return `
+      <div class="card">
+        <p class="kicker">ADVICE</p>
+        <h1 class="title serif">今のあなたへのアドバイス</h1>
+        <p class="lead">連絡・不安との付き合い方・ケンカ予防・価値観・関係タイプ別の視点から、具体的なアドバイスをまとめました。</p>
+
+        <div>
+          ${shown.map(a=>`
+            <div class="advice-item">
+              <div class="advice-dot"></div>
+              <div>
+                <p class="advice-title">${a.title}</p>
+                <p class="advice-body">${a.body}</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="divider"></div>
+        <div class="locked">
+          <p>残り${lockedCount}項目のアドバイスは、有料note記事で公開しています。</p>
+          <a class="cta-note" href="${NOTE_ARTICLE_URL}" target="_blank" rel="noopener">有料note記事で続きを読む</a>
+        </div>
+
+        <div class="divider"></div>
+        <button class="btn btn-ghost" onclick="editDiagnosis()">情報を編集する</button>
+
+        <div class="footer-nav">
+          <button onclick="goto('result')">結果</button>
+          <button onclick="goto('story')">未来ストーリー</button>
+          <button class="active" onclick="goto('advice')">アドバイス</button>
+          <button onclick="restart()">もう一度</button>
+        </div>
+      </div>
+    `;
+  },
+};
+
+/* ---------- イベントハンドラ ---------- */
+function updatePartner(key, value){
+  state.partner[key] = value;
+  // 入力画面では全体を再描画せず、次へボタンの有効/無効だけを更新する
+  // (テキスト入力の途中でフォーカスが外れるのを防ぐため)
+  if(state.screen==='input'){
+    const btn = document.getElementById('btn-input-next');
+    if(btn){
+      const canNext = state.partner.nickname.trim().length>0 && state.partner.relation;
+      btn.disabled = !canNext;
+    }
+  }
+}
+
+function startFlow(){
+  state.partner = { nickname:'', gender:'', age:'', relation:'', metVia:'' };
+  state.answers = {};
+  state.qIndex = 0;
+  state.scores = null;
+  state.resultTab = 'm3';
+  goto('input');
+}
+
+function beginQuestions(){
+  state.qIndex = 0;
+  goto('questions');
+}
+
+function goBackFromInput(){
+  if(state.editing){
+    goto('result');
+  } else {
+    goto('start');
+  }
+}
+
+function editDiagnosis(){
+  state.editing = true;
+  goto('input');
+}
+
+function answerQuestion(i){
+  const q = activeQuestions()[state.qIndex];
+  state.answers[q.id] = i;
+  render();
+}
+
+function nextQuestion(){
+  const qs = activeQuestions();
+  if(state.qIndex < qs.length-1){
+    state.qIndex++;
+    render();
+  } else {
+    state.scores = computeScores();
+    if(state.editing){
+      state.editing = false;
+    } else {
+      const entry = {
+        key: 'diagnosis:' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+        partner: {...state.partner},
+        scores: state.scores,
+        future: buildFuture(),
+        date: new Date().toLocaleDateString('ja-JP'),
+        timestamp: Date.now()
+      };
+      state.history.unshift(entry);
+      saveResultToStorage(entry);
+    }
+    goto('result');
+  }
+}
+
+function prevQuestion(){
+  if(state.qIndex===0){ goto('input'); return; }
+  state.qIndex--;
+  render();
+}
+
+function setResultTab(tab){ state.resultTab = tab; render(); }
+
+function restart(){ goto('start'); }
+
+function viewHistory(i){
+  const h = state.history[i];
+  state.partner = {...h.partner};
+  state.scores = {...h.scores, _future:h.future};
+  state.resultTab = 'm3';
+  goto('result');
+}
+
+function deleteHistoryItem(i){
+  const entry = state.history[i];
+  state.history.splice(i,1);
+  render();
+  if(entry.key) deleteResultFromStorage(entry.key);
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function escapeJs(str){
+  return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+/* ---------- 初期表示 ---------- */
+render();
+</script>
+</body>
+</html>
