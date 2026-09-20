@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>未来予想図 - 恋愛未来シミュレーター</title>
+<title>未来予想図（無料版） - 恋愛未来シミュレーター</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
 <style>
   :root{
@@ -253,6 +253,13 @@
     position:relative; padding:26px 20px; text-align:center;
     border-radius:14px; border:1px dashed var(--line); color:var(--text-faint);
   }
+  .locked p{ margin:0 0 14px; font-size:13.5px; line-height:1.8; }
+  .cta-note{
+    display:block; width:100%; text-align:center; text-decoration:none;
+    padding:14px 18px; border-radius:14px;
+    background:linear-gradient(120deg, var(--accent-gold) 0%, #e0ab4c 100%);
+    color:#241705; font-weight:700; font-size:15px;
+  }
   .advice-item{
     display:flex; gap:12px; padding:16px 0; border-bottom:1px solid var(--line);
   }
@@ -346,6 +353,8 @@
 })();
 
 /* ---------- 状態 ---------- */
+const NOTE_ARTICLE_URL = 'https://note.com/like_swan6953/n/n1b5ed040b09a';
+
 const state = {
   screen: 'start',
   partner: { nickname:'', gender:'', age:'', relation:'', metVia:'' },
@@ -1036,7 +1045,7 @@ const screens = {
       <div class="card">
         <div class="moonmark"></div>
         <p class="kicker">FUTURE LOVE READING</p>
-        <h1 class="title serif">未来予想図</h1>
+        <h1 class="title serif">未来予想図 <span class="badge-premium">無料版</span></h1>
         <p class="lead">今のふたりの関係を、いくつかの質問だけで占います。3ヶ月後・半年後・1年後——月が満ちていくように、この先の関係の姿を映し出します。</p>
         <div class="stack">
           <button class="btn btn-primary" onclick="startFlow()">診断をはじめる</button>
@@ -1254,7 +1263,7 @@ const screens = {
           `).join('')}
         </div>
 
-        ${(() => {
+        ${tab === 'm3' ? (() => {
           const ICONS = { overview:'\ud83c\udf19', event:'\u2726', caution:'\u26a0' };
           return current.sections.map(sec=>`
             <div class="story-card type-${sec.type}">
@@ -1265,7 +1274,12 @@ const screens = {
               <p class="advice-body" style="margin:0;">${sec.body}</p>
             </div>
           `).join('');
-        })()}
+        })() : `
+          <div class="locked">
+            <p>「${tab==='m6'?'半年後':'1年後'}」の詳しいストーリーは、有料note記事で公開しています。</p>
+            <a class="cta-note" href="${NOTE_ARTICLE_URL}" target="_blank" rel="noopener">有料note記事で続きを読む</a>
+          </div>
+        `}
 
         <div class="divider"></div>
         <button class="btn btn-ghost" onclick="editDiagnosis()">情報を編集する</button>
@@ -1282,7 +1296,8 @@ const screens = {
 
   advice(){
     const s = state.scores, f = s._future || (s._future = buildFuture());
-    const shown = f.advice;
+    const shown = f.advice.slice(0, 1);
+    const lockedCount = f.advice.length - shown.length;
     return `
       <div class="card">
         <p class="kicker">ADVICE</p>
@@ -1301,7 +1316,11 @@ const screens = {
           `).join('')}
         </div>
 
-
+        <div class="divider"></div>
+        <div class="locked">
+          <p>残り${lockedCount}項目のアドバイスは、有料note記事で公開しています。</p>
+          <a class="cta-note" href="${NOTE_ARTICLE_URL}" target="_blank" rel="noopener">有料note記事で続きを読む</a>
+        </div>
 
         <div class="divider"></div>
         <button class="btn btn-ghost" onclick="editDiagnosis()">情報を編集する</button>
